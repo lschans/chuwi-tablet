@@ -52,8 +52,6 @@ sudo apt install gnome-kiosk evtest
 
 Now we are ready to install the gnome extension. 
 
-AS ROOT!
-
 Copy the folder 'kbdlock@local.host' to ~/.local/share/gnome-shell/extensions/
 
 Log out and log in again, use the gnome extension manager and enable the module 'KBDLock'
