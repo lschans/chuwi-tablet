@@ -1,0 +1,7 @@
+{
+    "uuid": "kbdlock@local.host",
+    "name": "KBDLock",
+    "description": "Lock Chuwi minibook keyboard",
+    "shell-version": [ "45", "46" ],
+    "url": "https://localhost"
+}

@@ -1,0 +1,10 @@
+[Unit]
+Description=Disable keyboard on chuwi minibook laptops
+
+[Service]
+ExecStart=/bin/bash -c /opt/kbdlock/kbdlock.sh
+PrivateTmp=no
+WorkingDirectory=/tmp/
+
+[Install]
+WantedBy=multi-user.target
