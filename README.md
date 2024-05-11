@@ -46,7 +46,7 @@ sudo apt install -y mainline
 
 I enabled rc versions of the kernel and picked the latest available. I did a reboot and installed some more packages that we need for the on screen keyboard and to 'block' the keyboard.
 
-sudo apt install gnome-kiosk evtest
+sudo apt install gnome-kiosk evtest systemd-container
 
 ------
 
@@ -70,6 +70,51 @@ Then copy the file 'kbdlock.service' to /lib/systemd/system/
 do a 'systemctl daemon-reload' and next 'systemctl start kbdlock.service' 
 
 Now the buttton in the gnome extension should work. If you confirmed it all working you can 'systemctl enable kbdlock.service' to have this 'hack' working until there is a proper solution.
+
+---------
+
+The next step will be a bit more involved, we also want to have the button on the 'gdm login screen'.
+I found out the hard way that if the keyboard is locked and you logout, that you can't just enable it.
+
+To install the module for the gdm user, we need to follow the next steps
+
+AS ROOT!
+
+machinectl shell gdm@ /bin/bash
+
+You are now in the shell of the gdm user. (Handle with care)
+
+dconf reset -f /
+
+cd .local/share/gnome-shell/
+mkdir extensions
+cd extensions
+pwd
+
+You will now probably see a path much like
+
+/var/lib/gdm3/.local/share/gnome-shell/extensions
+
+
+
+Now open a second terminal and copy the extension folder (kbdlock@local.host) to 
+
+/var/lib/gdm3/.local/share/gnome-shell/extensions (The path we just got from the 'gdm' terminal)
+
+And set the ownership
+
+chown -R gdm:gdm /var/lib/gdm3/.local/share/gnome-shell/extensions
+
+You can now close the root terminal and go back to the 'gdm' terminal
+
+Here we type the following
+
+gsettings set org.gnome.shell enabled-extensions "['kbdlock@local.host']"
+
+And again we can close that terminal to. If everything went right, you have the lock button in the login screen too.
+
+
+--------
 
 Happy hacking, and have fun using the minibook as a tablet.
 

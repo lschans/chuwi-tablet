@@ -1,5 +1,6 @@
 {
     "uuid": "kbdlock@local.host",
+    "session-modes": ["gdm", "user", "unlock-dialog"],
     "name": "KBDLock",
     "description": "Lock Chuwi minibook keyboard",
     "shell-version": [ "45", "46" ],
