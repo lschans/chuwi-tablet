@@ -2,7 +2,7 @@
 
 Unlock the potential of your Chuwi Minibook X (and probably other Chinese convertible laptops) by enabling tablet mode through a simple workaround.
 
-Inspired by the work of [Sonnyp on GitHub](https://github.com/sonnyp/linux-minibook-x), I embarked on a journey to transform my cute little laptop into a fully functional convertible device using userspace code.
+Inspired by the work of [Sonnyp on GitHub](https://github.com/sonnyp/linux-minibook-x) and with help and research from [sleepy4cat](https://github.com/sleeply4cat), I embarked on a journey to transform my cute little laptop into a fully functional convertible device using userspace code.
 
 *(Mostly because I don't have the illusion that Chuwi will fix the BIOS for us.)*
 
@@ -83,7 +83,10 @@ To 'tune' the sensor we need to add a line to the system configuration. So as ro
 
 ```bash
 
-echo "sensor:modalias:*
+echo "sensor:modalias:acpi:/dev/iio-device0
+ ACCEL_MOUNT_MATRIX=0, 1, 0; 1, 0, 0; 0, 0, 1" >> /etc/udev/hwdb.d/61-sensor-local.hwdb
+
+echo "sensor:modalias:acpi:/dev/iio-device1
  ACCEL_MOUNT_MATRIX=0, 1, 0; 1, 0, 0; 0, 0, 1" >> /etc/udev/hwdb.d/61-sensor-local.hwdb
 
 ```

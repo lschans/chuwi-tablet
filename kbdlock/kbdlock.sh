@@ -1,7 +1,19 @@
 #! /bin/bash -
 
-# For this script we assume that /tmp exist and is writable
+# We need to test if we have both sensors
+# if not we need to add the second one
+# Both should exist (Thanks to https://github.com/sleeply4cat for pointing me in this direction)
 
+# /sys/bus/iio/devices/iio:device0/in_accel_x_raw (Lid)
+# /sys/bus/iio/devices/iio:device1/in_accel_x_raw (Base)
+#
+# echo mxc4005 0x15 > /sys/bus/i2c/devices/i2c-0/new_device
+
+if ! grep -q 0 "/sys/bus/iio/devices/iio:device1/in_accel_x_raw"; then
+   echo mxc4005 0x15 > /sys/bus/i2c/devices/i2c-0/new_device
+fi
+
+# For this script we assume that /tmp exist and is writable
 PIDFILE="/tmp/kbdlock.pid"
 STATEFILE="/tmp/kbdlock.state" 
 CURRENTSTATE=0
