@@ -37,6 +37,9 @@ sudo cat /sys/class/dmi/id/chassis_type
 
 In a better world, this is where we want to see 31 or 32, and convertilbe. But unfortunately this needs be set to the right value in the BIOS, not by us, but by Chuwi.
 
+*EDIT:**
+*With some late night coding and research [sleeply4cat](https://github.com/sleeply4cat) found out that this sensor is not really a sensor. It's something that's set by two vectors from two iio devices. And we already have the setcode to prove this. (kbdlock/tablet_mode_test.sh)**
+
 ## Inventing and Crafting a Solution
 
 Since kernelspace wasn't going to provide us with an answer to our problem, not even after upgrading to the release candidate of the 6.9 kernel I decided to solve the problem from userspace.
@@ -79,7 +82,24 @@ cat /sys/bus/iio/devices/iio:device0/in_accel_z_raw'
 
 If you wiggle the laptop around you should see the numbers change. (press CTRL+C to exit watch)
 
-To 'tune' the sensor we need to add a line to the system configuration. So as root run the following code. *(The space indentation on the second line is there on purpose)*
+**EDIT:**
+*With some late night coding and research [sleeply4cat](https://github.com/sleeply4cat) found out that there is second accelerometer in the laptop you can follow the research here in this [issue on github](https://github.com/sonnyp/linux-minibook-x/issues/5). It's just not default added by the kernel. Luckily there is a way to enable it.*
+
+```bash
+echo mxc4005 0x15 > /sys/bus/i2c/devices/i2c-0/new_device
+```
+
+After adding the second device there are now 2 sensors to probe. If you replace 'device0' in the previous code snippet you see the other accelerometer at work too.
+
+```bash
+# The lid
+cat /sys/bus/iio/devices/iio:device0/in_accel_x_raw
+
+# The base
+cat /sys/bus/iio/devices/iio:device1/in_accel_x_raw
+```
+
+To 'tune' both the sensors we need to add two lines to the system configuration. So as root run the following code. *(The space indentation on each second line is there on purpose)*
 
 ```bash
 
